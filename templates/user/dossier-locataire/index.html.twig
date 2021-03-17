@@ -1,0 +1,63 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Date de naissance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in datas %}
+                            <td>
+                                {% if data.data is defined and data.data is not null %} 
+                                     {{ data.data }}
+                                {% else %}
+                                    Aucun information {{ data.profilModelData.label }} remplie par le demandeur
+                                {% endif %}
+                            </td>
+                         {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12">
+                {% if documents is not null %}
+                    <table class="table">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">Titre de votre document uploader</th>
+                                <th scope="col">Télécharger</th>
+                                <th scope="col">Voir le document</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for document in documents %} 
+                                <tr class="text-center">
+                                    <th scope="row">{{ document.label }}</th>
+                                    <td>
+                                        <a href="{{ path('document.download', {'id': document.id, 'token' : token}) }}" class="btn btn-outline-primary">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('document.display', {'id' : document.id, 'token' : token}) }}" class="btn btn-outline-primary">
+                                            <i class="far fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h2 class="mt-3">Aucun document uploader de la part du demandeur.</h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
