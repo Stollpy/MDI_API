@@ -16,6 +16,7 @@
         "fakerphp/faker": "^1.13",
         "knpuniversity/oauth2-client-bundle": "^2.7",
         "league/oauth2-google": "^3.0",
+        "lexik/jwt-authentication-bundle": "^2.11",
         "nelmio/cors-bundle": "^2.1",
         "oneup/flysystem-bundle": "^3.7",
         "phpdocumentor/reflection-docblock": "^5.2",

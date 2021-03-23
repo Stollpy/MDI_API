@@ -2,73 +2,33 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use ApiPlatform\Core\Api\IriConverterInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends AbstractController
-{
+
+class SecurityController extends AbstractController {
     /**
-     * @Route("/login", name="security.login")
+     * @Route("/api/login", name="api_login", methods={"POST"})
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(IriConverterInterface $iriConverter)
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->json([
+                'error' => 'Invalid login reuqest'
+            ], 400);
+        }
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->json([
+            'location' => $iriConverter->getIriFromItem($this->getUSer())
+        ]);
     }
 
     /**
-     * @Route("/logout", name="security.logout")
+     * @Route("/api/logout", name="api_logout")
      */
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
-
-    /**
-     * @Route("/connect/google", name="security.connect_google")
-     * @param ClientRegistry $clientRegistry
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function ConnectGoogle(ClientRegistry $clientRegistry)
-    {
-        return $clientRegistry
-            ->getClient('google')
-            ->redirect([
-                'profile', 'email'
-            ], [])
-        ;
-    }
-
-
-     /**
-     * @Route("/connect/google/check", name="security.connect_google_check")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function ConnectGoogleCheck(Request $request, ClientRegistry $clientRegistry)
-    {
-        if(!$this->getUser())
-        {
-            $this->addFlash('error', 'Une erreur c\'est produit lors de l\'authentification via Google !');
-            return $this->redirectToRoute('security.login');
-        }
-        else{
-            $this->addFlash('success', 'Vous êtes désormais connectez !');
-            return $this->redirectToRoute('home.index');
-        }
-
+        throw new \Exception('shouldnot be reached');
     }
 }

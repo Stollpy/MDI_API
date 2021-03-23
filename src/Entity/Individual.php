@@ -2,13 +2,28 @@
 
 namespace App\Entity;
 
-use App\Repository\IndividualRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\IndividualRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=IndividualRepository::class)
+ * @ApiResource(
+ *      normalizationContext={"groups"={"individual:read"}},
+ *      denormalizationContext={"groups"={"individual:write"}},
+ *      collectionOperations={
+ *          "GET",
+ *          "POST",
+ *      },
+ *      itemOperations={
+ *          "GET",
+ *          "PATCH",
+ *          "DELETE",
+ *      }
+ * )
  */
 class Individual
 {
@@ -16,57 +31,68 @@ class Individual
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"individual:read", "individual:write"})
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="individual", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"individual:read", "individual:write"})
      */
     private $user;
 
     /**
      * @ORM\OneToMany(targetEntity=IndividualData::class, mappedBy="individual")
+     * @Groups({"individual:read", "individual:write", "user:read", "user:read"})
      */
     private $individualData;
 
     /**
      * @ORM\ManyToMany(targetEntity=Individual::class, inversedBy="individuals")
+     * @Groups({"individual:read", "individual:write", "user:read"})
      */
     private $garant;
 
     /**
      * @ORM\ManyToMany(targetEntity=Individual::class, mappedBy="garant")
+     * @Groups({"individual:read", "individual:write", "user:read"})
      */
     private $individuals;
 
     /**
      * @ORM\ManyToMany(targetEntity=Profiles::class, inversedBy="individuals")
+     * @Groups({"individual:read", "individual:write", "user:read"})
      */
     private $profiles;
 
     /**
      * @ORM\OneToMany(targetEntity=Document::class, mappedBy="individual", orphanRemoval=true)
+     * @Groups({"individual:read", "individual:write", "user:read"})
      */
     private $documents;
 
     /**
      * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="individual")
+     * @Groups({"individual:read", "individual:write", "user:read"})
      */
     private $invitations;
 
     /**
      * @ORM\OneToMany(targetEntity=Income::class, mappedBy="individual", orphanRemoval=true)
+     * @Groups({"individual:read", "individual:write", "user:read"})
      */
     private $incomes;
 
     /**
      * @ORM\OneToMany(targetEntity=IncomeYear::class, mappedBy="individual")
+     * @Groups({"individual:read", "individual:write", "user:read"})
      */
     private $incomeYears;
 
     /**
      * @ORM\OneToMany(targetEntity=Ads::class, mappedBy="individual")
+     * @Groups({"individual:read", "individual:write", "user:read"})
      */
     private $ads;
 

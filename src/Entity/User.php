@@ -5,6 +5,8 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -13,6 +15,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="Email existant")
+ * @ApiResource(
+ *      normalizationContext={"groups"={"user:read"}},
+ *      denormalizationContext={"groups"={"user:write"}},
+ *      collectionOperations={
+ *          "GET",
+ *          "POST",
+ *      },
+ *      itemOperations={
+ *          "GET" = {"security" = "is_granted('USER_VOTER', object)"},
+ *          "PATCH"= {"security" = "is_granted('USER_VOTER', object)"},
+ *          "DELETE"
+ *      },
+ * )
  */
 class User implements UserInterface
 {
@@ -26,6 +41,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read", "user:write"})
      */
     private $id;
 
@@ -33,47 +49,56 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
+     * @Groups({"user:read", "user:write"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user:read", "user:write"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user:read", "user:write"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $token_account;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"user:read", "user:write"})
      */
     private $account_confirmation;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $password_token;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"user:read", "user:write"})
      */
     private $password_requestedAt;
 
     /**
      * @ORM\OneToOne(targetEntity=Individual::class, mappedBy="user", cascade={"persist", "remove"})
+     * @Groups({"user:read", "user:write"})
      */
     private $individual;
 
