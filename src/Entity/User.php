@@ -23,8 +23,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          "POST",
  *      },
  *      itemOperations={
- *          "GET" = {"security" = "is_granted('USER_VOTER', object)"},
- *          "PATCH"= {"security" = "is_granted('USER_VOTER', object)"},
+ *          "GET",
+ *          "PATCH",
  *          "DELETE"
  *      },
  * )
