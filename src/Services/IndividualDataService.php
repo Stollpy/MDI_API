@@ -78,6 +78,7 @@ class IndividualDataService {
             $individualData = new IndividualData();
             $individualData->setIndividual($individual);
             $individualData->setProfilModelData($model);
+            $individualData->setCategory($model->getIndividualDataCategory());
             $this->manager->persist($individualData);
         }       
 

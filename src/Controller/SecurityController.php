@@ -20,7 +20,8 @@ class SecurityController extends AbstractController {
         }
 
         return $this->json([
-            'location' => $iriConverter->getIriFromItem($this->getUSer())
+            'location_user' => $iriConverter->getIriFromItem($this->getUSer()),
+            'location_individual' => $iriConverter->getIriFromItem($this->getUser()->getIndividual()),
         ]);
     }
 

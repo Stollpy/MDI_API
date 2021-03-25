@@ -18,11 +18,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "GET",
  *      },
  *      itemOperations={
- *          "GET" = {"security" = "is_granted('INDIVIDUAL_DATA_PATCH', object)"},
- *          "PATCH" = {"security" = "is_granted('INDIVIDUAL_DATA_PATCH', object)"},
+ *          "GET",
+ *          "PATCH",
  *      }
  * )
- * @ApiFilter(SearchFilter::class, properties={"individual": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"individual": "exact", })
  */
 class IndividualData
 {
@@ -30,26 +30,32 @@ class IndividualData
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"read:data", "individual:read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Individual::class, inversedBy="individualData")
-     * @Groups({"read:ads"})
+     * @Groups({"read:ads", "read:data"})
      */
     private $individual;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"write:data"})
+     * @Groups({"write:data", "read:data", "individual:read"})
      */
     private $data;
 
     /**
      * @ORM\ManyToOne(targetEntity=ProfilModelData::class, inversedBy="IndividualData")
-     * @Groups({"read:data"})
+     * @Groups({"read:data", "individual:read"})
      */
     private $profilModelData;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=IndividualDataCategory::class, inversedBy="individualData")
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -88,6 +94,18 @@ class IndividualData
     public function setProfilModelData(?ProfilModelData $profilModelData): self
     {
         $this->profilModelData = $profilModelData;
+
+        return $this;
+    }
+
+    public function getCategory(): ?IndividualDataCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?IndividualDataCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

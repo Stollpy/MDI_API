@@ -26,22 +26,25 @@ class ProfilModelData
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"read:model", "read:data"})
+     * @Groups({"read:model", "read:data", "individual:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"individual:read"})
      */
     private $label;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"individual:read"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"individual:read"})
      */
     private $type;
 
@@ -53,12 +56,13 @@ class ProfilModelData
     /**
      * @ORM\ManyToOne(targetEntity=IndividualDataCategory::class, inversedBy="ProfilModelData")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:model", "read:data"})
+     * @Groups({"read:model", "read:data", "individual:read"})
      */
     private $individualDataCategory;
 
     /**
      * @ORM\ManyToMany(targetEntity=Profiles::class, mappedBy="profileModelData")
+     *  @Groups({"individual:read"})
      */
     private $profiles;
 

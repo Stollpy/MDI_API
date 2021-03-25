@@ -128,7 +128,7 @@ class CreateProjectMinimaHelper {
             $this->manager->persist($parent);
         }
         $this->manager->flush();
-        
+       
         foreach ($profils['child'] as $profil){
             $parent = $this->profilesRepository->findOneBy(['code' => $profil['parent']]);
             $child = new Profiles;
