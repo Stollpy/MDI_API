@@ -32,19 +32,19 @@ class ProfilModelData
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"individual:read"})
+     * @Groups({"individual:read", "read:data"})
      */
     private $label;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"individual:read"})
+     * @Groups({"individual:read", "read:data"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"individual:read"})
+     * @Groups({"individual:read", "read:data"})
      */
     private $type;
 
@@ -56,7 +56,7 @@ class ProfilModelData
     /**
      * @ORM\ManyToOne(targetEntity=IndividualDataCategory::class, inversedBy="ProfilModelData")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:model", "read:data", "individual:read"})
+     * @Groups({"read:model", "individual:read"})
      */
     private $individualDataCategory;
 

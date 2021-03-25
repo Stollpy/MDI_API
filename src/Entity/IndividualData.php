@@ -22,7 +22,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "PATCH",
  *      }
  * )
- * @ApiFilter(SearchFilter::class, properties={"individual": "exact", })
+ * @ApiFilter(SearchFilter::class, properties={"individual": "exact", "category": "exact"})
  */
 class IndividualData
 {
@@ -54,6 +54,7 @@ class IndividualData
 
     /**
      * @ORM\ManyToOne(targetEntity=IndividualDataCategory::class, inversedBy="individualData")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 

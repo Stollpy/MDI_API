@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\IndividualData;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
